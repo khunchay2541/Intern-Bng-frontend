@@ -1,0 +1,132 @@
+<app-navbar-upload></app-navbar-upload>
+<!-- sidebar แสดง dnd -->
+<div id="temp1Nav" class="sideNav">
+  <div class="sidebar-text">
+    <h2>Template A</h2>
+  </div>
+ <div class="grid-container" *ngFor="let card of cards"
+   cdkDropList
+   id="AllCards"
+   [cdkDropListData]="cards"
+   [cdkDropListConnectedTo]="['DropZone']">
+   <div class="grid-item" cdkDrag
+     [cdkDragData]="card"
+     (cdkDragStarted)="dragStarted($event)"
+     (cdkDragExited)="dragExited($event)"
+     (cdkDragEntered)="dragEntered($event)">
+       {{card.name}}
+   </div>
+ </div>
+ <!-- <button (click)="download()">Download PDF</button> -->
+</div>
+
+<div class="content">
+  <div class="side"></div>
+  <div id="exportPDF" >
+
+    <!-- Drop Zone -->
+      <div  class="page" size="A4"
+        cdkDropList
+        #dropZoneList="cdkDropList"
+        id="DropZone"
+        [cdkDropListData]="zones"
+        (cdkDragEntered)="dragEntered($event)"
+        (cdkDropListDropped)="drop($event)">
+        <div class="box " *ngFor="let zone of zones; "
+          cdkDrag
+          cdkDragBoundary=".page"
+          [cdkDragData]="zone"
+          (cdkDragStarted)="move($event)">
+
+          <!-- แสดงผลการ drag แต่ละอัน -->
+          <div class ="margin-tb clearfix" *ngIf=" zone.name=='Logo' ">
+            <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}">
+            <img class="logo" src="{{zone.image}}">
+            <span>
+              <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+              <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+              <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+            </span>
+            </div>
+          </div>
+
+          <div class ="margin-tb clearfix " *ngIf=" zone.name=='หัวข้อ' ">
+            <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}">
+            <input type="text" class="editable center" [(ngModel)]="zone.text">
+            <span>
+              <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+              <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+              <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+            </span>
+            </div>
+          </div>
+
+          <div class ="margin-tb clearfix" *ngIf=" zone.name=='เรียน' ">
+            <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}">
+            <input type="text" class="editable width15" [(ngModel)]="zone.head">
+            <input type="text" class="editable width70" [(ngModel)]="zone.text">
+            <span>
+              <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+              <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+              <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+            </span>
+            </div>
+          </div>
+
+          <div class ="margin-tb clearfix" *ngIf=" zone.name=='เรื่อง' ">
+            <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}">
+            <input type="text" class="editable width15" [(ngModel)]="zone.head">
+            <input type="text" class="editable width70" [(ngModel)]="zone.text">
+            <span>
+              <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+              <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+              <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+            </span>
+            </div>
+          </div>
+
+          <div class ="margin-tb " *ngIf=" zone.name=='รายละเอียด' ">
+            <!-- <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}"> -->
+            <div class="center">
+            <textarea class="editable width100" [(ngModel)]="zone.text" rows="6"></textarea>
+            <!-- <span>
+              <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+              <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+              <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+            </span> -->
+            </div>
+          </div>
+
+          <div class="margin-tb clearfix" *ngIf=" zone.name=='ลายเซ็น' ">
+            <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}">
+              <div class="sig ">
+                <input type="text" class="editable center " [(ngModel)]="zone.signature"><br>
+                <input type="text" class="editable center " [(ngModel)]="zone.text"><br>
+                <input type="text" class="editable center " [(ngModel)]="zone.status">
+              </div>
+              <span>
+                <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+                <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+                <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+              </span>
+            </div>
+          </div>
+
+          <div class ="margin-tb clearfix" *ngIf=" zone.name=='เวลา' ">
+            <div [ngClass]="{'center':zone.posC ,'floatL':zone.posL ,'floatR':zone.posR}">
+              <input type="text" class="editable width10" [(ngModel)]="zone.day">
+              <input type="text" class="editable width15" [(ngModel)]="zone.month">
+              <input type="text" class="editable width10" [(ngModel)]="zone.year">
+              <span>
+                <button class="button button-temp" (click)="shiftL(zone.index)">Left</button>
+                <button class="button button-temp" (click)="shiftC(zone.index)">Center</button>
+                <button class="button button-temp" (click)="shiftR(zone.index)">Right</button>
+              </span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+  </div>
+</div>
